@@ -7,7 +7,7 @@ import com.vaadin.data.util.sqlcontainer.connection.SimpleJDBCConnectionPool;
 import com.vaadin.data.util.sqlcontainer.query.TableQuery;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Panel;
-import org.test.Consts;
+import org.test.Database;
 
 import java.sql.SQLException;
 
@@ -21,18 +21,10 @@ class AbstractCustomGrid extends CustomComponent {
         panel = new Panel(title);
         setCompositionRoot(panel);
 
-        // setup TableQuerys
-        // TODO: pool probably should be shared single instance. fixme
-        JDBCConnectionPool pool = new SimpleJDBCConnectionPool(
-                Consts.JDBC_DRIVER, // driver
-                Consts.JDBC_URL,  // connection url
-                Consts.JDBC_USER, Consts.JDBC_PASS,
-                2, 5);
-
-        TableQuery itemsTableQuery = new TableQuery("items", pool);
+        TableQuery itemsTableQuery = new TableQuery("items", Database.pool);
         itemsTableQuery.setVersionColumn("OPTLOCK");
 
-        TableQuery usersTableQuery = new TableQuery("users", pool);
+        TableQuery usersTableQuery = new TableQuery("users", Database.pool);
         usersTableQuery.setVersionColumn("OPTLOCK");
 
         items = new SQLContainer(itemsTableQuery);

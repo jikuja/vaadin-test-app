@@ -7,7 +7,7 @@ import com.vaadin.data.util.sqlcontainer.connection.SimpleJDBCConnectionPool;
 import com.vaadin.data.util.sqlcontainer.query.TableQuery;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Panel;
-import org.test.Consts;
+import org.test.Database;
 
 import java.sql.SQLException;
 
@@ -20,16 +20,9 @@ class AbstractCustomGridSqlView extends CustomComponent {
         panel = new Panel(title);
         setCompositionRoot(panel);
 
-        // setup TableQuerys
-        JDBCConnectionPool pool = new SimpleJDBCConnectionPool(
-                Consts.JDBC_DRIVER, // driver
-                Consts.JDBC_URL,  // connection url
-                Consts.JDBC_USER, Consts.JDBC_PASS,
-                2, 5);
-
         // WHY DOES NOT WORK with sqlite?! I have View named combined, please work!
         // BUG?
-        TableQuery itemsTableQuery = new TableQuery("combined", pool);
+        TableQuery itemsTableQuery = new TableQuery("combined", Database.pool);
         //itemsTableQuery.setVersionColumn("OPTLOCK");
 
         items = new SQLContainer(itemsTableQuery);

@@ -1,2 +1,0 @@
-INSERT INTO PUBLIC.COMBINED (ID, TITLE, DESCRIPTION, LAT, LONG, NAME) VALUES (1, 'test1', 'asdfghj dfghjk', 0, 0, 'juuso');
-INSERT INTO PUBLIC.COMBINED (ID, TITLE, DESCRIPTION, LAT, LONG, NAME) VALUES (2, 'test2', 'hjsdsodj  nikuoioiu o', 0, 0, 'joona');

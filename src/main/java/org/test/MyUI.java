@@ -1,32 +1,18 @@
 package org.test;
 
-import javax.management.RuntimeErrorException;
 import javax.servlet.annotation.WebServlet;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
-import com.vaadin.data.Item;
-import com.vaadin.data.util.sqlcontainer.SQLContainer;
-import com.vaadin.data.util.sqlcontainer.connection.JDBCConnectionPool;
-import com.vaadin.data.util.sqlcontainer.connection.SimpleJDBCConnectionPool;
-import com.vaadin.data.util.sqlcontainer.query.TableQuery;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
-import com.vaadin.tapio.googlemaps.GoogleMap;
-import com.vaadin.tapio.googlemaps.client.LatLon;
 import com.vaadin.ui.*;
 import org.test.sqltest.CombinedUsingRef;
+import org.test.sqltest.FreeformWithDelegate;
 import org.test.sqltest.Items;
-import org.test.sqltest.ItemsCombined;
 import org.test.sqltest.Users;
 import org.vaadin.addon.leaflet.*;
 import org.vaadin.addon.leaflet.shared.Point;
-import org.vaadin.addon.vol3.OLMap;
-import org.vaadin.addon.vol3.OLView;
-import org.vaadin.addon.vol3.OLViewOptions;
-import org.vaadin.addon.vol3.client.OLCoordinate;
-import org.vaadin.addon.vol3.layer.OLTileLayer;
-import org.vaadin.addon.vol3.source.OLOSMSource;
 
 /**
  * This UI is the application entry point. A UI may either represent a browser window 
@@ -37,7 +23,6 @@ import org.vaadin.addon.vol3.source.OLOSMSource;
  */
 @Theme("mytheme")
 public class MyUI extends UI {
-    private GoogleMap googleMap;
     private LMap lmap;
     private boolean ladding = false;
 
@@ -127,7 +112,7 @@ public class MyUI extends UI {
 
 
         horizontalLayout.addComponent(b);
-        horizontalLayout.addComponent(new Button("Test")); // just other button for visual thing
+        horizontalLayout.addComponent(new Button("FreeformWithDelegate")); // just other button for visual thing
         tabSheet.addTab(verticalLayout, "Leaflet");
 
         /* *******
@@ -140,6 +125,7 @@ public class MyUI extends UI {
             grids.addComponent(new Items());
             grids.addComponent(new CombinedUsingRef());
             //grids.addComponent(new ItemsCombined()); // does not work. See class for comments
+            grids.addComponent(new FreeformWithDelegate());
         } catch (Exception e) {
             // I don't care. I just want to see error if something fails
             throw new RuntimeException(e);
@@ -159,7 +145,7 @@ public class MyUI extends UI {
         // http://stackoverflow.com/questions/15972920/vaadin-sqlcontainer-reference-how-to-implement-foreign-key-relation
 
         tabSheet.addTab(grids, "Database");
-        tabSheet.setSelectedTab(4);
+        tabSheet.setSelectedTab(1);
     }
 
     @WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)
