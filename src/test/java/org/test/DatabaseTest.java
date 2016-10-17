@@ -1,10 +1,15 @@
 package org.test;
 
+import com.vaadin.data.Item;
 import com.vaadin.data.util.filter.SimpleStringFilter;
+import com.vaadin.data.util.sqlcontainer.RowItem;
 import com.vaadin.data.util.sqlcontainer.SQLContainer;
+import com.vaadin.data.util.sqlcontainer.TemporaryRowId;
 import com.vaadin.data.util.sqlcontainer.query.TableQuery;
 import com.vaadin.server.VaadinServlet;
+import com.vaadin.ui.Table;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -104,9 +109,9 @@ public class DatabaseTest {
 
     @Test
     public void sortWithDelegate() throws Exception {
-        Hack.hack();
         SQLContainer c = FreeformWithDelegate.getSqlContainer();
         assertTrue(c.size() == 5);
+        Hack.hack();
         c.sort(new Object[] {"DESCRIPTION"}, new boolean[] {true} );
         String s = (String) c.getItem(c.firstItemId()).getItemProperty("DESCRIPTION").getValue();
         assertTrue(s.startsWith("asdf"));
@@ -114,14 +119,49 @@ public class DatabaseTest {
         assertTrue(s.startsWith("zzzz"));
     }
 
+    @Ignore
     @Test
     public void lockingWithDelegate() throws Exception {
         Hack.hack();
+        fail();
         SQLContainer c = FreeformWithDelegate.getSqlContainer();
         // get something from c
 
         // get copy of c and edit it and save
 
         // edit and save original c. Should throw an error
+    }
+
+    @Test
+    public void deleteWithDelegate() throws Exception {
+        SQLContainer c = FreeformWithDelegate.getSqlContainer();
+        assertTrue(c.size() == 5);
+        Object itemid = c.firstItemId();
+        c.removeItem(itemid);
+        assertTrue(c.size() == 4);
+    }
+
+    @Test
+    public void insertWithDelegate() throws Exception {
+        SQLContainer c = FreeformWithDelegate.getSqlContainer();
+        assertTrue(c.size() == 5);
+
+        Table table = new Table("", c);
+        Object o = table.addItem();
+        Item i = table.getItem(o);
+        i.getItemProperty("TITLE").setValue("foo");
+        table.commit();
+        assertTrue(c.size() == 6);
+    }
+
+    @Test
+    public void updateWithDelegate() throws Exception {
+        SQLContainer c = FreeformWithDelegate.getSqlContainer();
+        assertTrue(c.size() == 5);
+        Object itemid = c.firstItemId();
+        Item i = c.getItem(itemid);
+        i.getItemProperty("TITLE").setValue("bbbb");
+        c.commit();
+        assertTrue(c.size() == 5);
     }
 }

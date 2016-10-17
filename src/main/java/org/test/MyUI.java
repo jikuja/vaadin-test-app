@@ -145,7 +145,8 @@ public class MyUI extends UI {
         // http://stackoverflow.com/questions/15972920/vaadin-sqlcontainer-reference-how-to-implement-foreign-key-relation
 
         tabSheet.addTab(grids, "Database");
-        tabSheet.setSelectedTab(1);
+        tabSheet.addTab(new MyTableThing(), "Textual");
+        tabSheet.setSelectedTab(2);
     }
 
     @WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)
